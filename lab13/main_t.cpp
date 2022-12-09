@@ -1,43 +1,151 @@
+//СњС‚РєСЂС‹С‚Р°В¤ Р°РґСЂРµСЃР°С†РёВ¤, Р»РёРЅРµР№РЅРѕРµ Р·РѕРЅРґРёСЂРѕРІР°РЅРёРµ
+
+#include <iostream>
 #include <string>
-#include <stdio.h>
-#include <chrono>
+#include <vector>
+#include <fstream>
 
-#include "externalmergesort.h"
+class HashNode
+{
+public:
+    HashNode(int key, std::string name)
+        :m_key(key), m_name(name)
+    {}
+    std::string name()
+    {
+        return m_name;
+    }
+    int key()
+    {
+        return m_key;
+    }
+private:
+    int m_key;
+    std::string m_name;
+};
 
-// Создать файл со случайными числами
-void CreateFileWithRandomMember(const std::string& pathfile) {
-    std::ofstream file(pathfile, std::ios::binary | std::ios::out);
-    //file.unsetf(std::ios::skipws);
-    if(!file.is_open()) {
-        return;
+class HashTable
+{
+public:
+    HashTable()
+    {
+        for (int i = 0; i < first_size; i++)
+        {
+            hash_table.push_back(HashNode(i,""));
+        }
+    };
+
+    int getFS()
+    {
+       return first_size;
     }
-    for (int i = 1; i < 200000000; ++i) {
-        int val = static_cast<int>(std::rand());
-        file.write(reinterpret_cast<char *>(&val), sizeof(val));    
+
+    int hashFunction(const std::string& str);
+
+    void insert(const std::string& node);
+
+    std::string get(const std::string& str);
+
+    int size();
+
+    HashNode operator[] (int key)
+    {
+        return hash_table[key];
     }
-    file.close();
+
+private:
+    std::vector<HashNode> hash_table;
+    int first_size = 12;
+};
+
+int HashTable::hashFunction(const std::string& str)
+{
+    int hash=0;
+    for (auto i = 0; i < str.size(); i++)
+    {
+        hash+=(str[i]-'0');
+    }
+    return (hash/37);
 }
 
-int main(int argc, char *argv[]) {
+void HashTable::insert(const std::string& node)
+{
+    int key = hashFunction(node);
+    if (key >= hash_table.size())
+    {
+        hash_table.push_back(HashNode(key, node));
+    }
+    else
+    {
+        int i = key;
+        bool flag = false;
+        while(hash_table[i].name() != "")
+        { 
+            i++;
+        }
+        if (hash_table.size() < i)
+        {
+            hash_table.push_back(HashNode(key,node));
+        }
+        else
+        {
+            hash_table[i] = HashNode(key, node);
+            return;
+        } 
+    }
+    return;
+}
 
-    //CreateFileWithRandomMember("input");
+std::string HashTable::get(const std::string& str)
+{
+    int key = hashFunction(str);
+    if(hash_table.size()-1 < key)
+        key = getFS();
+    for (int i = key; i < hash_table.size(); i++)
+    {
+        if (hash_table[i].name() == str)
+        {
+            return hash_table[i].name();
+        }
+    }
+    return "ERROR: Line is not found!";
+}
 
-    auto start_time = std::chrono::high_resolution_clock::now();
+int HashTable::size()
+{
+    return hash_table.size();
+};
 
-    std::string path("");
-    std::string file_name_input(path + "input");
-    std::string file_name_output(path + "output");
-    // Размер буфера массива использ. для сортировки элементов
-    const size_t size_buf = (120 * 1024 * 1024) / sizeof(uint32_t);
-    // Внешняя сортировка слиянием
-    ExternalMergeSort extMergeSort(size_buf, 2);
-    extMergeSort.run(file_name_input);
-    std::string sort_file_name = extMergeSort.getNameRezult();
-    rename(sort_file_name.c_str(), file_name_output.c_str());
 
-    auto end_time = std::chrono::high_resolution_clock::now();
-    auto elapsed_ns = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-    std::cout << elapsed_ns.count() << " ms\n";
+int main()
+{
+
+    HashTable ht;
+    std::string line;
+    int a = 1;
+
+    std::ifstream in("input.txt");
+    std::ofstream out;
+    if (in.is_open())
+    {
+        while (getline(in, line))
+        {
+            ht.insert(line);
+            std::cout << a << ") "<< ht.get(line) << std::endl;
+            a++;
+        }
+    }
+    in.close();
+
+    out.open("output.txt", std::ios::out | std::ios::trunc);
+    out << "key\t|\tline\n";
+    int i = 0;
+    for (; i < ht.size() - 1; i++)
+    {
+        out << ht[i].key() << "\t|\t" << ht[i].name() << "\n";
+    }
+    out << ht[i].key() << "\t|\t" << ht[i].name();
+    out.close();
 
     return 0;
 }
