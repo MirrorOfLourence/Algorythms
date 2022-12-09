@@ -1,0 +1,14 @@
+key	|	line
+0	|	
+1	|	ABBA
+2	|	SEV
+3	|	DVWE
+4	|	HVep
+3	|	PVEH
+6	|	Vphv
+7	|	lhaer
+8	|	afberb
+5	|	VEvp
+4	|	VEhp
+3	|	PHVE
+13	|	VevpushdV
