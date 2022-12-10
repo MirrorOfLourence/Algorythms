@@ -1,12 +1,11 @@
-//Открытая адресация, линейное зондирование
+//ГЋГІГЄГ°Г»ГІГ Гї Г Г¤Г°ГҐГ±Г Г¶ГЁГї, Г«ГЁГ­ГҐГ©Г­Г®ГҐ Г§Г®Г­Г¤ГЁГ°Г®ГўГ Г­ГЁГҐ
 
 #include <iostream>
 #include <string>
 #include <vector>
-#include <fstream>
 #include <stack>
 
-struct tNode //Класс элемента бинарного дерева
+struct tNode //ГЉГ«Г Г±Г± ГЅГ«ГҐГ¬ГҐГ­ГІГ  ГЎГЁГ­Г Г°Г­Г®ГЈГ® Г¤ГҐГ°ГҐГўГ 
 { 
     int data;
     int level;
@@ -15,7 +14,7 @@ struct tNode //Класс элемента бинарного дерева
     tNode* parent;
 };
 
-tNode* MAKE(int data, tNode* p)  //Ф-ия создания узла
+tNode* MAKE(int data, tNode* p)  //Г”-ГЁГї Г±Г®Г§Г¤Г Г­ГЁГї ГіГ§Г«Г 
 {
     tNode* q = new tNode;
     q->data = data;
@@ -26,7 +25,7 @@ tNode* MAKE(int data, tNode* p)  //Ф-ия создания узла
     return q;
 }
 
-void ADD(int data, tNode*& root)    //Ф-ия добавления элемента по правилам БДП
+void ADD(int data, tNode*& root)    //Г”-ГЁГї Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГї ГЅГ«ГҐГ¬ГҐГ­ГІГ  ГЇГ® ГЇГ°Г ГўГЁГ«Г Г¬ ГЃГ„ГЏ
 {
     if (root == nullptr) {
         root = MAKE(data, nullptr);
@@ -47,7 +46,7 @@ void ADD(int data, tNode*& root)    //Ф-ия добавления элемента по правилам БДП
         v->right = u;
 }
 
-void ADD_FICTIVE(int data, tNode*& root, bool is_left)  //Функция добавления элемента на основе скобочной записи
+void ADD_FICTIVE(int data, tNode*& root, bool is_left)  //Г”ГіГ­ГЄГ¶ГЁГї Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГї ГЅГ«ГҐГ¬ГҐГ­ГІГ  Г­Г  Г®Г±Г­Г®ГўГҐ Г±ГЄГ®ГЎГ®Г·Г­Г®Г© Г§Г ГЇГЁГ±ГЁ
 {
     tNode* v = root;
     tNode* u = MAKE(data, v);
@@ -57,10 +56,10 @@ void ADD_FICTIVE(int data, tNode*& root, bool is_left)  //Функция добавления эле
         v->right = u;
 }
 
-void FILL(std::string& str, int& i, tNode*& root)   //Функция заполнения бинарного дерева на основе скобочной записи
+void FILL(std::string& str, int& i, tNode*& root)   //Г”ГіГ­ГЄГ¶ГЁГї Г§Г ГЇГ®Г«Г­ГҐГ­ГЁГї ГЎГЁГ­Г Г°Г­Г®ГЈГ® Г¤ГҐГ°ГҐГўГ  Г­Г  Г®Г±Г­Г®ГўГҐ Г±ГЄГ®ГЎГ®Г·Г­Г®Г© Г§Г ГЇГЁГ±ГЁ
 {
     int value=0;
-    /*while ((str[i] >= '0') && (str[i] <= '9'))  //Если в строке число, пишем его в значение узла
+    /*while ((str[i] >= '0') && (str[i] <= '9'))  //Г…Г±Г«ГЁ Гў Г±ГІГ°Г®ГЄГҐ Г·ГЁГ±Г«Г®, ГЇГЁГёГҐГ¬ ГҐГЈГ® Гў Г§Г­Г Г·ГҐГ­ГЁГҐ ГіГ§Г«Г 
     {
     value += value*10 + str[i] - '0';
     i++;
@@ -267,13 +266,13 @@ int main()
     setlocale(LC_ALL, "rus");
 
     std::string str;
-    std::cout << "Введите выражение в скобочном виде!" << std::endl;
+    std::cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГўГ»Г°Г Г¦ГҐГ­ГЁГҐ Гў Г±ГЄГ®ГЎГ®Г·Г­Г®Г¬ ГўГЁГ¤ГҐ!" << std::endl;
     std::cin >> str;
 
     tNode* root = nullptr;
 
     int value=0, i=0;
-    while ((str[i] >= '0') && (str[i] <= '9'))  //Если в строке число, пишем его в значение узла
+    while ((str[i] >= '0') && (str[i] <= '9'))  //Г…Г±Г«ГЁ Гў Г±ГІГ°Г®ГЄГҐ Г·ГЁГ±Г«Г®, ГЇГЁГёГҐГ¬ ГҐГЈГ® Гў Г§Г­Г Г·ГҐГ­ГЁГҐ ГіГ§Г«Г 
     {
         value += value*10 + str[i] - '0';
         i++;
