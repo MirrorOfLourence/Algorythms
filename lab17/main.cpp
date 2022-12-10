@@ -292,7 +292,7 @@ int main()
     int value=0, i=0;
     while ((str[i] >= '0') && (str[i] <= '9'))  //Если в строке число, пишем его в значение узла
     {
-        value += value*10 + str[i] - '0';
+        value = value*10 + str[i] - '0';
         i++;
     }
     ADD(value, root);
