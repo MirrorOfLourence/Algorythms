@@ -274,7 +274,7 @@ int main()
     int value=0, i=0;
     while ((str[i] >= '0') && (str[i] <= '9'))  //Åñëè â ñòðîêå ÷èñëî, ïèøåì åãî â çíà÷åíèå óçëà
     {
-        value += value*10 + str[i] - '0';
+        value = value*10 + str[i] - '0';
         i++;
     }
     ADD(value, root);
