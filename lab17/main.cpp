@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <fstream>
 #include <stack>
 
 struct tNode //Класс элемента бинарного дерева
