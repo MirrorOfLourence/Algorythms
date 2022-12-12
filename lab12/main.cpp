@@ -3,12 +3,22 @@
 //подключение библиотеки для открытия файлов и записи
 #include <fstream>
 #include <iostream>
+#include <random>
 
 int main()
 {
-
+	srand(time(0));
 	std::ifstream in, in1, in2; // создаем объекты класса ifstream (файлового ввода)
-	std::ofstream out, out1, out2; //создаем объекты класса ofstream (файлового вывода)
+	std::ofstream out, out1, out2, first; //создаем объекты класса ofstream (файлового вывода)
+
+	first.open("input.txt", std::ios::out || std::ios::trunc);
+	for (int i = 0; i < 99; i++)
+	{
+		first << rand()%1000 << std::endl;
+	}
+	first << rand()%1000;
+
+	first.close();
 
 	int a, b = 0;
 	//кол-во чисел в файле
@@ -18,14 +28,14 @@ int main()
 	bool Afull, Bfull = true;
 
 	in.open("input.txt");
-	out.open("result.txt");
-	
+	out.open("output.txt");
+
 	while (in >> a)
 	{
-		out << a << " ";
+		out << a << "\n";
 		size++;
 	}
-	
+
 	in.close();
 	out.close();
 	/*длина серий фиксируется на каждом шаге.
@@ -35,7 +45,7 @@ int main()
 	for (int partSize = 1; partSize < size; partSize *= 2)
 	{
 		//Исходный файл f разбивается на два вспомогательных файла 
-		in.open("result.txt");
+		in.open("output.txt");
 		out1.open("A.txt");
 		out2.open("B.txt");
 		count = 0;
@@ -43,9 +53,9 @@ int main()
 		{
 			count++;
 			if (flag) 
-				out1 << a << " ";
+				out1 << a << "\n";
 			else 
-				out2 << a << " ";
+				out2 << a << "\n";
 
 			if (count == partSize)
 			{
@@ -60,7 +70,7 @@ int main()
 
 		in1.open("A.txt");
 		in2.open("B.txt");
-		out.open("result.txt");
+		out.open("output.txt");
 
 		//вспомогательные файлы сливаются в файл 
 		// при этом одиночные элементы образуют упорядоченные пары.
@@ -80,7 +90,7 @@ int main()
 			while (countA < partSize && Afull && countB < partSize && Bfull)
 				if (a < b)
 				{
-					out << a << " ";
+					out << a << "\n";
 					if (in1 >> a) 
 						Afull = true;
 					else 
@@ -89,7 +99,7 @@ int main()
 				}
 				else
 				{
-					out << b << " ";
+					out << b << "\n";
 					if (in2 >> b) 
 						Bfull = true;
 					else 
@@ -100,7 +110,7 @@ int main()
 			//каждый раз удваивая длину слитых последовательностей до тех пор, пока не будет упорядочен целиком весь файл
 			while (countA < partSize && Afull)
 			{
-				out << a << " ";
+				out << a << "\n";
 				if (in1 >> a) 
 					Afull = true;
 				else 
@@ -109,7 +119,7 @@ int main()
 			}
 			while (countB < partSize && Bfull)
 			{
-				out << b << " ";
+				out << b << "\n";
 				if (in2 >> b) 
 					Bfull = true;
 				else 
