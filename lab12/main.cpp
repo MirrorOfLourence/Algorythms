@@ -66,7 +66,7 @@ int main()
 		in.close();
 		out1.close();
 		out2.close();
-		//remove("result.txt");
+		//remove("output.txt");
 
 		in1.open("A.txt");
 		in2.open("B.txt");
