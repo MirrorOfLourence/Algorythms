@@ -2,60 +2,67 @@
 #include <vector>
 #include <fstream>
 
+std::vector<std::vector<int>> graph;
+std::vector<bool> visited;
 
-void DFS(int st, const std::vector<std::vector<int>>& graph, std::vector<bool>& visited)  //ф-ия поиска 
+void DFS(int st)
 {
-    int r=0;
-    std::cout<<st<<" ";
-    visited[st]=true;
-    for (r=0; r<graph[0].size(); r++)
-        if ((graph[st][r]!=0) && (!visited[r]))
-            DFS(r, graph, visited);
+    int r = 0;
+    std::cout << st << " ";
+    visited[st] = true;
+    for (r = 0; r < graph[0].size(); r++)
+    {
+        if ((graph[st][r] != 0) && (!visited[r]))
+        {
+            DFS(r);
+        }
+    }      
 }
-
 int main()
 {
    
     setlocale(LC_ALL, "Rus");
-    std::vector<std::vector<int>> graph;    //Граф
 
-    std::ifstream in;   //поток на вход
-    in.open("input.txt");   //загружаем в поток файл ввода
-    if (in.is_open())   //если файл открылся, то
+    std::ifstream in;   //РїРѕС‚РѕРє РЅР° РІС…РѕРґ
+    in.open("input.txt");   //Р·Р°РіСЂСѓР¶Р°РµРј РІ РїРѕС‚РѕРє С„Р°Р№Р» РІРІРѕРґР°
+    if (in.is_open())   //РµСЃР»Рё С„Р°Р№Р» РѕС‚РєСЂС‹Р»СЃСЏ, С‚Рѕ
     {
-        char c; //сюда считываем очередной символ
-        std::vector<int> line;  //вектор, в который загружаем строку
-        for (c = in.get(); c != EOF; c = in.get())   //проходим циклом до конца файла
+        char c; //СЃСЋРґР° СЃС‡РёС‚С‹РІР°РµРј РѕС‡РµСЂРµРґРЅРѕР№ СЃРёРјРІРѕР»
+        std::vector<int> line;  //РІРµРєС‚РѕСЂ, РІ РєРѕС‚РѕСЂС‹Р№ Р·Р°РіСЂСѓР¶Р°РµРј СЃС‚СЂРѕРєСѓ
+        for (c = in.get(); c != EOF; c = in.get())   //РїСЂРѕС…РѕРґРёРј С†РёРєР»РѕРј РґРѕ РєРѕРЅС†Р° С„Р°Р№Р»Р°
         {
-            if (c == '\n')  //если дошли до конца строки, пушим её в вектор
+            if (c == '\n')  //РµСЃР»Рё РґРѕС€Р»Рё РґРѕ РєРѕРЅС†Р° СЃС‚СЂРѕРєРё, РїСѓС€РёРј РµС‘ РІ РІРµРєС‚РѕСЂ
             {
                 graph.push_back(line);
                 line.clear();
             }
-            else    //иначе пушим в строку очередной символ
+            else    //РёРЅР°С‡Рµ РїСѓС€РёРј РІ СЃС‚СЂРѕРєСѓ РѕС‡РµСЂРµРґРЅРѕР№ СЃРёРјРІРѕР»
             {
                 line.push_back(c - '0');
             }
 
         }
-        graph.push_back(line);  //пушим в вектор последнюю строку, т.к. не обрабатывается в цикле из-за EOF в конце файла
+        graph.push_back(line);  //РїСѓС€РёРј РІ РІРµРєС‚РѕСЂ РїРѕСЃР»РµРґРЅСЋСЋ СЃС‚СЂРѕРєСѓ, С‚.Рє. РЅРµ РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚СЃСЏ РІ С†РёРєР»Рµ РёР·-Р·Р° EOF РІ РєРѕРЅС†Рµ С„Р°Р№Р»Р°
         line.clear();
     }
-    else    //если файл не открылся, то
+    else    //РµСЃР»Рё С„Р°Р№Р» РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ, С‚Рѕ
     {
-        std::cout << "ОШИБКА: Не удалось открыть файл!" << std::endl;   //выдаём ошибку
+        std::cout << "РћРЁРР‘РљРђ: РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р»!" << std::endl;   //РІС‹РґР°С‘Рј РѕС€РёР±РєСѓ
     }
 
-    std::vector<bool> visited(graph.size(), false);
-    for (std::vector<bool>::iterator i = std::find(visited.begin(), visited.end(), false); i != visited.end();)
+    for (int i = 0; i < graph[0].size(); i++)
     {
-        int j = i - visited.begin();
-        std::cout << "Старт в вершине " << j << ": ";
-        DFS(j, graph, visited);
-        std::cout << std::endl;
-        i = std::find(visited.begin(), visited.end(), false);
+        visited.push_back(false);
     }
-
-
+    for (int i = 0; i < visited.size(); i++)
+    {
+        if (visited[i] == false)
+        {
+            std::cout << "Р”Р»СЏ РІРµСЂС€РёРЅС‹ " << i << ": ";
+            DFS(i);
+            std::cout << std::endl;
+        }
+        
+    }
     return 0;
 }
